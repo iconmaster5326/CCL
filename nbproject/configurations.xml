@@ -99,7 +99,7 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>11</standard>
+          <standard>8</standard>
         </ccTool>
       </compileType>
       <item path="base_procs.cpp" ex="false" tool="1" flavor2="0">
