@@ -21,7 +21,7 @@ This project's Makefile was created by NetBeans for a Cygwin environment. I have
 
 ## Running
 
- ccl [file] [-d]
+ `ccl [file] [-d]`
 
 Without a file name, CCL will run in interactive mode. With one, it will read a file and execute it.
 
