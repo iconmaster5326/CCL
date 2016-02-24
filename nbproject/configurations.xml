@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="types" projectFiles="true">
+        <itemPath>ccl_type_arg.hpp</itemPath>
+        <itemPath>ccl_type_bool.hpp</itemPath>
+        <itemPath>ccl_type_code.hpp</itemPath>
+        <itemPath>ccl_type_key.hpp</itemPath>
+        <itemPath>ccl_type_list.hpp</itemPath>
+        <itemPath>ccl_type_map.hpp</itemPath>
+        <itemPath>ccl_type_number.hpp</itemPath>
+        <itemPath>ccl_type_string.hpp</itemPath>
+      </logicalFolder>
+      <itemPath>compiler.hpp</itemPath>
+      <itemPath>debugger.hpp</itemPath>
+      <itemPath>executor.hpp</itemPath>
+      <itemPath>expression.hpp</itemPath>
+      <itemPath>fenv.hpp</itemPath>
+      <itemPath>instruction.hpp</itemPath>
+      <itemPath>lexer.hpp</itemPath>
+      <itemPath>machine.hpp</itemPath>
+      <itemPath>object.hpp</itemPath>
+      <itemPath>operation.hpp</itemPath>
+      <itemPath>parser.hpp</itemPath>
+      <itemPath>pc_hook.hpp</itemPath>
+      <itemPath>proc.hpp</itemPath>
+      <itemPath>proc_hook.hpp</itemPath>
+      <itemPath>proc_user.hpp</itemPath>
+      <itemPath>program.hpp</itemPath>
+      <itemPath>source_range.hpp</itemPath>
+      <itemPath>token.hpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="types" projectFiles="true">
+        <itemPath>ccl_type_arg.cpp</itemPath>
+        <itemPath>ccl_type_bool.cpp</itemPath>
+        <itemPath>ccl_type_code.cpp</itemPath>
+        <itemPath>ccl_type_key.cpp</itemPath>
+        <itemPath>ccl_type_list.cpp</itemPath>
+        <itemPath>ccl_type_map.cpp</itemPath>
+        <itemPath>ccl_type_number.cpp</itemPath>
+        <itemPath>ccl_type_string.cpp</itemPath>
+      </logicalFolder>
+      <itemPath>base_procs.cpp</itemPath>
+      <itemPath>compiler.cpp</itemPath>
+      <itemPath>debugger.cpp</itemPath>
+      <itemPath>executor.cpp</itemPath>
+      <itemPath>expression.cpp</itemPath>
+      <itemPath>fenv.cpp</itemPath>
+      <itemPath>instruction.cpp</itemPath>
+      <itemPath>lexer.cpp</itemPath>
+      <itemPath>machine.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>object.cpp</itemPath>
+      <itemPath>operation.cpp</itemPath>
+      <itemPath>parser.cpp</itemPath>
+      <itemPath>proc.cpp</itemPath>
+      <itemPath>proc_hook.cpp</itemPath>
+      <itemPath>proc_user.cpp</itemPath>
+      <itemPath>program.cpp</itemPath>
+      <itemPath>source_range.cpp</itemPath>
+      <itemPath>token.cpp</itemPath>
+      <itemPath>type_hooks.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>11</standard>
+        </ccTool>
+      </compileType>
+      <item path="base_procs.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_arg.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_arg.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_bool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_bool.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_code.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_code.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_key.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_key.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_list.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_list.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_map.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_number.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_string.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_string.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="compiler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="compiler.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debugger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="debugger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="executor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="executor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="expression.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="expression.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fenv.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="fenv.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="instruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="instruction.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="lexer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lexer.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="machine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="machine.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="object.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="object.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="operation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="operation.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="parser.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="pc_hook.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc_hook.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc_hook.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc_user.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc_user.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="program.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="program.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="source_range.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="source_range.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="token.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="token.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="type_hooks.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>11</standard>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="base_procs.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_arg.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_arg.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_bool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_bool.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_code.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_code.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_key.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_key.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_list.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_list.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_map.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_number.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ccl_type_string.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ccl_type_string.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="compiler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="compiler.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debugger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="debugger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="executor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="executor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="expression.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="expression.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fenv.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="fenv.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="instruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="instruction.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="lexer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lexer.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="machine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="machine.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="object.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="object.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="operation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="operation.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="parser.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="pc_hook.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc_hook.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc_hook.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc_user.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="proc_user.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="program.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="program.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="source_range.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="source_range.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="token.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="token.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="type_hooks.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

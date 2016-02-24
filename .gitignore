@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# NetBeans build directories
+/dist/
+/build/
