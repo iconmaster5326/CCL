@@ -11,7 +11,9 @@ CCL is a interpreted language written in C++. Some features include:
 
 ## Downloads
 
-The drone.io build server can be found here: https://drone.io/github.com/iconmaster5326/CCL/files
+Get the CCL introduction slides [here](https://docs.google.com/presentation/d/1QwefIA8YP4kgyg5VEnUOz_pjGxFsNeCmqHEhd5dw8CQ/edit?usp=sharing)!
+
+The drone.io build server can be found [here](https://drone.io/github.com/iconmaster5326/CCL/files).
 
 It has the latest executable available for download.
 
