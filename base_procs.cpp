@@ -1177,6 +1177,26 @@ namespace ccl {
 				}
 		};
 		
+		class proc_to_str : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					return new ccl_object(types::str(), (void*) input->type->to_string(input).c_str());
+				}
+		};
+		
+		class proc_to_num : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					const char* s = input->type->to_string(input).c_str();
+					char* end;
+					double d = strtod(s, &end);
+					if (end == s) {
+						return constants::b_false();
+					}
+					return new ccl_object(types::num(), d);
+				}
+		};
+		
 		void register_base_procs() {
 			register_proc("dump", new proc_dump());
 			
@@ -1218,6 +1238,9 @@ namespace ccl {
 			register_proc("list", new proc_list());
 			register_proc("map", new proc_map());
 			register_proc("key", new proc_key());
+			
+			register_proc("to-str", new proc_to_str());
+			register_proc("to-num", new proc_to_num());
 			
 			register_proc("get", new proc_undef());
 			register_proc("set", new proc_undef());
