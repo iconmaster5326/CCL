@@ -1208,6 +1208,59 @@ namespace ccl {
 				}
 		};
 		
+		class proc_replace : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					if (input->type != types::str()) {
+						throw runtime_error(string()+"Expected input of type 'string'; got type '"+input->type->name+"'");
+					}
+					
+					vector<ccl_object*>* got = map_args(2, new string[2] {"from", "to"}, args, flags);
+					ccl_object* arg_from = (*got)[0] ? (*got)[0] : constants::b_false();
+					ccl_object* arg_to = (*got)[1] ? (*got)[1] : constants::b_false();
+					
+					if (arg_from->type != types::str()) {
+						throw runtime_error(string()+"Expected argument 'from' to be type 'string'; got type '"+arg_from->type->name+"'");
+					}
+					if (arg_to->type != types::str()) {
+						throw runtime_error(string()+"Expected argument 'to' to be type 'string'; got type '"+arg_to->type->name+"'");
+					}
+					
+					string s = input->str_val();
+					string from = arg_from->str_val();
+					string to = arg_to->str_val();
+					list<string*> v;
+					
+					if (from.empty()) {
+						return input;
+					}
+					
+					int i = 0;
+					while (1) {
+						int j = s.find(from, i);
+						if (j == s.npos) {
+							v.push_back(new string(s.substr(i)));
+							break;
+						}
+						v.push_back(new string(s.substr(i, j-i)));
+						i = j + from.size();
+					}
+					
+					ostringstream strs;
+					bool first = true;
+					for (list<string*>::iterator ii = v.begin(); ii != v.end(); ii++) {
+						if (first) {
+							first = false;
+						} else {
+							strs << to;
+						}
+						
+						strs << **ii;
+					}
+					return new ccl_object(types::str(), (void*) (new string(strs.str()))->c_str());
+				}
+		};
+		
 		void register_base_procs() {
 			register_proc("dump", new proc_dump());
 			
@@ -1278,6 +1331,7 @@ namespace ccl {
 			register_proc("split", new proc_split());
 			register_proc("lower", new proc_lower());
 			register_proc("upper", new proc_upper());
+			register_proc("replace", new proc_replace());
 			
 			register_proc("head", new proc_undef());
 			register_proc("tail", new proc_undef());
