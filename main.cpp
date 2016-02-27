@@ -91,7 +91,9 @@ int main(int argc, char** argv) {
 		cout << "ccl> ";
 		string s;
 		getline(cin, s);
-		s += "\n | print";
+		if (s.find(";") != s.size()-1) {
+			s += "\n | print";
+		}
 		
 		try {
 			list<token*>* tokens = parse("<input>", s);

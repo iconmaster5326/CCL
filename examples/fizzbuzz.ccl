@@ -1,0 +1,7 @@
+100 | loop {
+	add 1 | case
+		{mod 3 | eq 0 | and [; mod 5 | eq 0]} {"FizzBuzz" | print}
+		{mod 3 | eq 0} {"Fizz" | print}
+		{mod 5 | eq 0} {"Buzz" | print}
+		{print}
+};
