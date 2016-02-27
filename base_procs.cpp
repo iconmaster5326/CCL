@@ -268,6 +268,17 @@ namespace ccl {
 				}
 		};
 		
+		class proc_mod : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					ccl_object* operand = args->empty() ? constants::b_false() : args->front();
+					if (input->type == types::num() && operand->type == types::num()) {
+						return new ccl_object(types::num(), (double) (((int) input->num_val()) % ((int) operand->num_val())));
+					}
+					throw runtime_error(string("Operation undefined between types '")+input->type->name+"' and '"+operand->type->name+"'");
+				}
+		};
+		
 		class proc_eq : public proc {
 			public:
 				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
@@ -1219,6 +1230,7 @@ namespace ccl {
 			register_proc("sub", new proc_sub());
 			register_proc("mul", new proc_mul());
 			register_proc("div", new proc_div());
+			register_proc("mod", new proc_mod());
 			
 			register_proc("eq", new proc_eq());
 			register_proc("neq", new proc_neq());
