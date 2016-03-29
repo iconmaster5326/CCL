@@ -1208,6 +1208,13 @@ namespace ccl {
 				}
 		};
 		
+		class proc_type : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					return new ccl_object(types::str(), (void*) input->type->name);
+				}
+		};
+		
 		class proc_replace : public proc {
 			public:
 				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
@@ -1304,7 +1311,7 @@ namespace ccl {
 			register_proc("map", new proc_map());
 			register_proc("key", new proc_key());
 			
-			register_proc("to-str", new proc_to_str());
+			register_proc("type", new proc_type());
 			register_proc("to-num", new proc_to_num());
 			
 			register_proc("get", new proc_undef());
