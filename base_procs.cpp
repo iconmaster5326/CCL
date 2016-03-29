@@ -1268,6 +1268,105 @@ namespace ccl {
 				}
 		};
 		
+		class proc_repeat_hook : public pc_hook {
+		public:
+				list<arg_spec>* init_args;
+				list<ccl_object*> args;
+				code_spec* code;
+				ccl_object* input;
+				bool first = true;
+				
+				proc_repeat_hook(list<arg_spec>* init_args, code_spec* code, ccl_object* input) : init_args(init_args), code(code), input(input) {
+					for (list<arg_spec>::iterator ii = init_args->begin(); ii != init_args->end(); ii++) {
+						args.push_back(ii->default_value);
+					}
+				}
+				
+				void call(executor* e) override {
+					
+					if (!first) {
+						if (e->output->type == types::repeat()) {
+							args.clear();
+							vector<ccl_object*>* items = (vector<ccl_object*>*) e->output->value;
+							args.insert(args.begin(), items->begin(), items->end());
+						} else {
+							e->stack.push_front(e->output);
+							e->hook = NULL;
+							return;
+						}
+					} else {
+						first = false;
+					}
+					
+					fenv* f2 = new fenv(code->f);
+					list<ccl_object*>::iterator jj = args.begin();
+					for (list<arg_spec>::iterator ii = init_args->begin(); ii != init_args->end(); ii++) {
+						if (jj != args.end()) {
+							f2->set(ii->name, *jj);
+							jj++;
+						} else {
+							break;
+						}
+					}
+					e->m->load(code->p, f2, input);
+				}
+		};
+		
+		class proc_repeat : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					ccl_object* arg;
+					list<arg_spec>* f_args = new list<arg_spec>();
+					code_spec* f_code = NULL;
+					
+					if (args->empty()) {
+						throw runtime_error("expected one argument of type 'code'; got zero");
+					}
+					
+					if (flags->find("do") != flags->end()) {
+						f_code = (code_spec*) (*flags)["do"]->value;
+					}
+					
+					while (!args->empty()) {
+						arg = args->front();
+						args->pop_front();
+						
+						if (arg->type == types::str()) {
+							f_args->push_back(arg_spec(arg->str_val(), constants::b_false(), false));
+						} else if (arg->type == types::arg()) {
+							f_args->push_back(*((arg_spec*) arg->value));
+						} else if (arg->type == types::code()) {
+							if (f_code) {
+								throw runtime_error("expected one argument of type 'code'; got multiple");
+							}
+							f_code = (code_spec*) arg->value;
+						} else {
+							throw runtime_error(string("expected argument of type 'string'/'arg'/'code'; got type '")+arg->type->name+"'");
+						}
+					}
+					
+					if (!f_code) {
+						throw runtime_error("expected one argument of type 'code'; got zero");
+					}
+					
+					exec->hook = new proc_repeat_hook(f_args, f_code, input);
+					return NULL;
+				}
+		};
+		
+		class proc_recur : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					vector<ccl_object*>* vec = new vector<ccl_object*>(args->size());
+					int i = 0;
+					for (list<ccl_object*>::iterator ii = args->begin(); ii != args->end(); ii++) {
+						(*vec)[i] = *ii;
+						i++;
+					}
+					return new ccl_object(types::repeat(), vec);
+				}
+		};
+		
 		void register_base_procs() {
 			register_proc("dump", new proc_dump());
 			
@@ -1285,6 +1384,8 @@ namespace ccl {
 			register_proc("call", new proc_call());
 			register_proc("try", new proc_try());
 			register_proc("throw", new proc_throw());
+			register_proc("repeat", new proc_repeat());
+			register_proc("recur", new proc_recur());
 			
 			register_proc("add", new proc_add());
 			register_proc("sub", new proc_sub());
