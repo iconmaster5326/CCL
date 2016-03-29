@@ -1367,6 +1367,62 @@ namespace ccl {
 				}
 		};
 		
+		class proc_while_hook : public pc_hook {
+		public:
+				code_spec* cond;
+				code_spec* code;
+				bool did_cond = false;
+				bool first = true;
+				ccl_object* input;
+				proc_while_hook(code_spec* cond, code_spec* code, ccl_object* input) : cond(cond), code(code), input(input) {}
+
+				void call(executor* e) override {
+					if (did_cond) {
+						if (e->output->type == types::b_false()) {
+							e->stack.push_front(input);
+							e->hook = NULL;
+							return;
+						}
+						
+						fenv* f2 = new fenv(code->f);
+						e->m->load(code->p, f2, input);
+					} else {
+						if (first) {
+							first = false;
+						} else {
+							input = e->output;
+						}
+						
+						fenv* f2 = new fenv(cond->f);
+						e->m->load(cond->p, f2, input);
+					}
+					
+					did_cond = !did_cond;
+				}
+		};
+		
+		class proc_while : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					vector<ccl_object*>* got = map_args(2, new string[2] {"cond", "do"}, args, flags);
+					ccl_object* arg_cond = (*got)[0] ? (*got)[0] : constants::empty_code();
+					ccl_object* arg_code = (*got)[1] ? (*got)[1] : constants::empty_code();
+					
+					if (arg_cond->type != types::code()) {
+						throw runtime_error(string()+"argument 'cond' expects type 'code', got type '"+arg_cond->type->name+"'");
+					}
+					if (arg_code->type != types::code()) {
+						throw runtime_error(string()+"argument 'do' expects type 'code', got type '"+arg_code->type->name+"'");
+					}
+					
+					code_spec* cond = (code_spec*) arg_cond->value;
+					code_spec* code = (code_spec*) arg_code->value;
+					
+					exec->hook = new proc_while_hook(cond, code, input);
+					return NULL;
+				}
+		};
+		
 		void register_base_procs() {
 			register_proc("dump", new proc_dump());
 			
@@ -1386,6 +1442,7 @@ namespace ccl {
 			register_proc("throw", new proc_throw());
 			register_proc("repeat", new proc_repeat());
 			register_proc("recur", new proc_recur());
+			register_proc("while", new proc_while());
 			
 			register_proc("add", new proc_add());
 			register_proc("sub", new proc_sub());
