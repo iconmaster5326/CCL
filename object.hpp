@@ -70,6 +70,7 @@ namespace ccl {
 		ccl_type* proc();
 		ccl_type* arg();
 		ccl_type* key();
+		ccl_type* repeat();
 		ccl_type* _added_hook();
 		
 		void register_proc_hooks();

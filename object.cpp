@@ -17,6 +17,7 @@
 #include "ccl_type_list.hpp"
 #include "ccl_type_map.hpp"
 #include "ccl_type_key.hpp"
+#include "ccl_type_repeat.hpp"
 
 namespace ccl {
 	using namespace std;
@@ -126,6 +127,10 @@ namespace ccl {
 		static ccl_type_key _KEY = ccl_type_key();
 		ccl_type* key() {
 			return &_KEY;
+		}
+		static ccl_type_repeat _REPEAT = ccl_type_repeat();
+		ccl_type* repeat() {
+			return &_REPEAT;
 		}
 		static ccl_type _ADDED_HOOK = ccl_type("_added_hook");
 		ccl_type* _added_hook() {

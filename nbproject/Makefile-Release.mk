@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/ccl_type_list.o \
 	${OBJECTDIR}/ccl_type_map.o \
 	${OBJECTDIR}/ccl_type_number.o \
+	${OBJECTDIR}/ccl_type_repeat.o \
 	${OBJECTDIR}/ccl_type_string.o \
 	${OBJECTDIR}/compiler.o \
 	${OBJECTDIR}/debugger.o \
@@ -128,6 +129,11 @@ ${OBJECTDIR}/ccl_type_number.o: ccl_type_number.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ccl_type_number.o ccl_type_number.cpp
+
+${OBJECTDIR}/ccl_type_repeat.o: ccl_type_repeat.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ccl_type_repeat.o ccl_type_repeat.cpp
 
 ${OBJECTDIR}/ccl_type_string.o: ccl_type_string.cpp 
 	${MKDIR} -p ${OBJECTDIR}
