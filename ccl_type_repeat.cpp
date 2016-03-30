@@ -15,12 +15,12 @@
 namespace ccl {
 	using namespace std;
 	
-	ccl_type_repeat::ccl_type_repeat() : ccl_type("repeat") {}
+	ccl_type_repeat::ccl_type_repeat() : ccl_type("recur") {}
 	
 	string ccl_type_repeat::to_string(ccl_object* obj) {
 		vector<ccl_object*>* items = (vector<ccl_object*>*) obj->value;
 		ostringstream strs;
-		strs << "(repeat: ";
+		strs << "(recur: ";
 		bool first = true;
 		for (vector<ccl_object*>::iterator ii = items->begin(); ii != items->end(); ii++) {
 			if (!first) {
