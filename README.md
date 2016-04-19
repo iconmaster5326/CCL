@@ -31,4 +31,4 @@ The flag `-d` turns on debug mode.
 
 ## Documentation
 
-Coming soon!
+Documentation can be found on [the wiki](https://github.com/iconmaster5326/CCL/wiki)!
