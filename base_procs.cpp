@@ -435,6 +435,13 @@ namespace ccl {
 				}
 		};
 		
+		class proc_echo : public proc {
+			public:
+				ccl_object* call_impl(ccl_object* input, list<ccl_object*>* args, map<string, ccl_object*>* flags, executor* exec) override {
+					return args->empty() ? constants::b_false() : args->front();
+				}
+		};
+		
 		class proc_each_hook : public pc_hook {
 			public:
 				bool first = true;
@@ -1427,6 +1434,8 @@ namespace ccl {
 			register_proc("dump", new proc_dump());
 			
 			register_proc("pass", new proc_pass());
+			register_proc("echo", new proc_echo());
+			
 			register_proc("print", new proc_print());
 			register_proc("input", new proc_input());
 			register_proc("proc", new proc_proc());
