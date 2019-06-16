@@ -16,10 +16,12 @@ using namespace ccl;
 static const string SPECIAL_CHARS = "$|&;(){}[]\"\'";
 
 ccl::Lexer::Lexer(const std::string& location, std::istream& input) : location{location}, inputOwned(false), input(&input) {
+	noskipws(*this->input);
 	toNextWS();
 }
 
 ccl::Lexer::Lexer(const std::string& location, const std::string& input) : location{location}, inputOwned(true), input(new std::istringstream(input)) {
+	noskipws(*this->input);
 	toNextWS();
 }
 
@@ -37,11 +39,9 @@ void Lexer::advance(char c) {
 }
 
 Token ccl::Lexer::next() {
-	if (done()) return {Token::Type::NONE, ""};
-	
-	noskipws(*input);
-	Token result;
-	Source source = {location, line, col};
+	Token result{Token::Type::NONE, ""};
+	Source source = {location, line, col}; result.source = source;
+	if (done()) return result;
 	char c; *input >> c; advance(c);
 	
 	switch (c) {
@@ -176,12 +176,12 @@ Token ccl::Lexer::next() {
 }
 
 bool ccl::Lexer::done() {
-	return input->eof();
+	return input->fail() || input->eof();
 }
 
 void ccl::Lexer::toNextWS() {
 	char c = ' ';
-	while (!this->input->eof() && isspace(c)) {
+	while (!done() && isspace(c)) {
 		*input >> c;
 		advance(c);
 	}
