@@ -75,9 +75,9 @@ Token ccl::Lexer::next() {
 				if (pos != r.size()) throw invalid_argument("did not consume whole string");
 				result = {Token::Type::WORD, "-"+r}; // really bad hack for negative number constants
 			} catch (const invalid_argument& ex) {
-				result = {Token::Type::FLAG, r};
+				result = {Token::Type::FLAG, r}; // not a number, so it's a flag
 			} catch (const out_of_range& ex) {
-				throw exception();
+				result = {Token::Type::WORD, "-"+r}; // the parser will round this down to -infinity for us
 			}
 		}
 	} break;
