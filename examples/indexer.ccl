@@ -1,3 +1,0 @@
-input | split " " & lower | fold [arg m [map]] {
-	$m | set [;] [get [;] -or 0 | add 1]
-} &| reverse & "$[get-key]: $[get-value]" | sort & print;
