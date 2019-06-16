@@ -8,6 +8,8 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
+#include <vector>
+
 #include "ccl/lexer.hpp"
 
 using namespace std;
@@ -246,6 +248,40 @@ BOOST_AUTO_TEST_CASE(varEdgeCase) {
 	});
 	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
 	BOOST_CHECK_EQUAL(t.value, "a$b");
+	
+	BOOST_CHECK(lexer.done());
+}
+
+BOOST_AUTO_TEST_CASE(strings) {
+	Lexer lexer{location, "'' 'a' 'a b' ' ' '\\'' '\"' '\\n' 'a\\nb' '\\\\' '\\$' '\n' 'a\nb'"};
+	Token t;
+	
+	vector<string> values{"", "a", "a b", " ", "'", "\"", "\n", "a\nb", "\\", "$", "\n", "a\nb"};
+	
+	for (const string& s : values) {
+		BOOST_CHECK_NO_THROW({
+			t = lexer.next();
+		});
+		BOOST_CHECK_EQUAL(t.type, Token::Type::STRING);
+		BOOST_CHECK_EQUAL(t.value, s);
+	}
+	
+	BOOST_CHECK(lexer.done());
+}
+
+BOOST_AUTO_TEST_CASE(exStrings) {
+	Lexer lexer{location, "\"\" \"a\" \"a b\" \" \" \"'\" \"\\\"\" \"\\n\" \"a\\nb\" \"\\\\\" \"\\$\" \"\n\" \"a\nb\""};
+	Token t;
+	
+	vector<string> values{"", "a", "a b", " ", "'", "\"", "\n", "a\nb", "\\", "$", "\n", "a\nb"};
+	
+	for (const string& s : values) {
+		BOOST_CHECK_NO_THROW({
+			t = lexer.next();
+		});
+		BOOST_CHECK_EQUAL(t.type, Token::Type::EX_STRING);
+		BOOST_CHECK_EQUAL(t.value, s);
+	}
 	
 	BOOST_CHECK(lexer.done());
 }
