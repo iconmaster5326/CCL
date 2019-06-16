@@ -13,7 +13,7 @@
 using namespace std;
 using namespace ccl;
 
-static const string SPECIAL_CHARS = "$|&;(){}[]\"\'";
+static const string SPECIAL_CHARS = "|&;(){}[]\"\'";
 
 ccl::Lexer::Lexer(const std::string& location, std::istream& input) : location{location}, inputOwned(false), input(&input) {
 	noskipws(*this->input);

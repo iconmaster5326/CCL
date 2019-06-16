@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(trailingWhitespace) {
 }
 
 BOOST_AUTO_TEST_CASE(flagEdgeCases) {
-	Lexer lexer{location, "--a -a-b -a- -1 - -. -.1 -1.a -a.1"};
+	Lexer lexer{location, "--a -a-b -a- -1 - -. -.1 -1.a -a.1 a- a-b"};
 	Token t;
 	
 	BOOST_CHECK_NO_THROW({
@@ -185,6 +185,67 @@ BOOST_AUTO_TEST_CASE(flagEdgeCases) {
 	});
 	BOOST_CHECK_EQUAL(t.type, Token::Type::FLAG);
 	BOOST_CHECK_EQUAL(t.value, "a.1");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "a-");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "a-b");
+	
+	BOOST_CHECK(lexer.done());
+}
+
+BOOST_AUTO_TEST_CASE(varEdgeCase) {
+	Lexer lexer{location, "$ $-a $a- $$a $a$ a$ a$b"};
+	Token t;
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "$");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::VAR);
+	BOOST_CHECK_EQUAL(t.value, "-a");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::VAR);
+	BOOST_CHECK_EQUAL(t.value, "a-");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::VAR);
+	BOOST_CHECK_EQUAL(t.value, "$a");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::VAR);
+	BOOST_CHECK_EQUAL(t.value, "a$");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "a$");
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "a$b");
 	
 	BOOST_CHECK(lexer.done());
 }
