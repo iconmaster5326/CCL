@@ -70,7 +70,9 @@ Token ccl::Lexer::next() {
 			result = {Token::Type::WORD, "-"};
 		else {
 			try {
-				stod(r);
+				size_t pos;
+				stod(r, &pos);
+				if (pos != r.size()) throw invalid_argument("did not consume whole string");
 				result = {Token::Type::WORD, "-"+r}; // really bad hack for negative number constants
 			} catch (const invalid_argument& ex) {
 				result = {Token::Type::FLAG, r};
