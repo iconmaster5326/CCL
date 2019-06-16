@@ -7,6 +7,7 @@
 
 #include <unordered_set>
 #include <unordered_map>
+#include <limits>
 
 #include "ccl/gc.hpp"
 
@@ -16,8 +17,8 @@ using namespace ccl;
 std::list<ccl::GcNode> ccl::gcNodes{};
 Mutex ccl::gcMutex{};
 size_t ccl::gcBytesAllocated = 0;
-size_t ccl::gcHardLimit = 1024;
-size_t ccl::gcSoftLimit = 1024;
+size_t ccl::gcHardLimit = numeric_limits<size_t>::max();
+size_t ccl::gcSoftLimit = 0;
 
 ccl::GcAble::~GcAble() {}
 
