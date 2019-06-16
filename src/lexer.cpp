@@ -37,22 +37,23 @@ void Lexer::advance(char c) {
 }
 
 Token ccl::Lexer::next() {
-	if (done()) return {Token::Type::NONE, "", {location, line, col}};
+	if (done()) return {Token::Type::NONE, ""};
 	
 	noskipws(*input);
 	Token result;
-	char c; *input >> c;
+	Source source = {location, line, col};
+	char c; *input >> c; advance(c);
 	
 	switch (c) {
-	case '|': result = {Token::Type::PIPE, "|", {location, line, col}}; break;
-	case '&': result = {Token::Type::AND, "&", {location, line, col}}; break;
-	case ';': result = {Token::Type::SEMICOLON, ";", {location, line, col}}; break;
-	case '(': result = {Token::Type::LPAREN, "(", {location, line, col}}; break;
-	case ')': result = {Token::Type::RPAREN, ")", {location, line, col}}; break;
-	case '{': result = {Token::Type::LBRACE, "{", {location, line, col}}; break;
-	case '}': result = {Token::Type::RBRACE, "}", {location, line, col}}; break;
-	case '[': result = {Token::Type::LBRACKET, "[", {location, line, col}}; break;
-	case ']': result = {Token::Type::RBRACKET, "]", {location, line, col}}; break;
+	case '|': result = {Token::Type::PIPE, "|"}; break;
+	case '&': result = {Token::Type::AND, "&"}; break;
+	case ';': result = {Token::Type::SEMICOLON, ";"}; break;
+	case '(': result = {Token::Type::LPAREN, "("}; break;
+	case ')': result = {Token::Type::RPAREN, ")"}; break;
+	case '{': result = {Token::Type::LBRACE, "{"}; break;
+	case '}': result = {Token::Type::RBRACE, "}"}; break;
+	case '[': result = {Token::Type::LBRACKET, "["}; break;
+	case ']': result = {Token::Type::RBRACKET, "]"}; break;
 	case '-': {
 		ostringstream word;
 		char c = input->peek();
@@ -66,13 +67,13 @@ Token ccl::Lexer::next() {
 		
 		string r = word.str();
 		if (r.empty())
-			result = {Token::Type::WORD, "-", {location, line, col}};
+			result = {Token::Type::WORD, "-"};
 		else {
 			try {
 				stod(r);
-				result = {Token::Type::WORD, "-"+r, {location, line, col}}; // really bad hack for negative number constants
+				result = {Token::Type::WORD, "-"+r}; // really bad hack for negative number constants
 			} catch (const invalid_argument& ex) {
-				result = {Token::Type::FLAG, r, {location, line, col}};
+				result = {Token::Type::FLAG, r};
 			} catch (const out_of_range& ex) {
 				throw exception();
 			}
@@ -91,9 +92,9 @@ Token ccl::Lexer::next() {
 		
 		string r = word.str();
 		if (r.empty())
-			result = {Token::Type::WORD, "$", {location, line, col}};
+			result = {Token::Type::WORD, "$"};
 		else
-			result = {Token::Type::VAR, r, {location, line, col}};
+			result = {Token::Type::VAR, r};
 	} break;
 	case '\'': {
 		ostringstream word;
@@ -121,7 +122,7 @@ Token ccl::Lexer::next() {
 		}
 		
 		*input >> c; advance(c);
-		result = {Token::Type::STRING, word.str(), {location, line, col}};
+		result = {Token::Type::STRING, word.str()};
 	} break;
 	case '\"': {
 		ostringstream word;
@@ -149,7 +150,7 @@ Token ccl::Lexer::next() {
 		}
 		
 		*input >> c; advance(c);
-		result = {Token::Type::EX_STRING, word.str(), {location, line, col}};
+		result = {Token::Type::EX_STRING, word.str()};
 	} break;
 	default:
 		ostringstream word; word << c;
@@ -164,12 +165,13 @@ Token ccl::Lexer::next() {
 		
 		string s = word.str();
 		if (s == "...")
-			result = {Token::Type::ELLIPSES, s, {location, line, col}};
+			result = {Token::Type::ELLIPSES, s};
 		else
-			result = {Token::Type::WORD, s, {location, line, col}};
+			result = {Token::Type::WORD, s};
 	}
 	
 	toNextWS();
+	result.source = source;
 	return result;
 }
 

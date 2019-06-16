@@ -17,14 +17,10 @@ BUILD_DIR := $(abspath build)
 BIN_DIR := $(abspath bin)
 INCLUDE_DIR := $(abspath include)
 
-CXXFLAGS := -std=c++17 -I$(INCLUDE_DIR)
+CXXFLAGS := -std=c++17 -I$(INCLUDE_DIR) -g
 CXXFLAGS_SHARED := -fPIC
 LINKFLAGS := -rdynamic -lpthread
 LINKFLAGS_SHARED := -shared
-
-ifeq ($(DEBUG),1)
-CXXFLAGS += -g -DCCL_GC_DEBUG
-endif
 
 # main tasks
 include src/Makefile
