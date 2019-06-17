@@ -37,6 +37,7 @@ namespace ccl {
 	using GcNodeRef = std::list<GcNode>::iterator;
 	
 	struct GcOutOfMemoryError {};
+	struct GcInternalError {};
 	
 	struct GcNode {
 		bool collectable = false;
@@ -85,6 +86,25 @@ namespace ccl {
 	struct Gc {
 		GcNodeRef node;
 		
+		Gc(const T& other) {
+			Lock lock{gcMutex};
+			
+			for (GcNodeRef node = gcNodes.begin(); node != gcNodes.end(); node++) {
+				if (&other == node->memory) {
+					this->node = node;
+					node->refs++;
+					break;
+				}
+			}
+			
+			throw GcInternalError();
+		}
+		
+		Gc(GcNodeRef other) : node{other} {
+			Lock lock{gcMutex};
+			node->refs++;
+		}
+		
 		Gc(const Gc<T>& other) : node{other.node} {
 			Lock lock{gcMutex};
 			node->refs++;
@@ -129,7 +149,7 @@ namespace ccl {
 			return (T*)(node->memory);
 		}
 		
-		operator GcNodeRef() {
+		operator GcNodeRef() const {
 			return node;
 		}
 		
