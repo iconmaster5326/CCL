@@ -8,8 +8,6 @@
 #ifndef INCLUDE_CCL_OBJECT_HPP_
 #define INCLUDE_CCL_OBJECT_HPP_
 
-#include <boost/uuid/uuid.hpp>
-
 #include "ccl/types.hpp"
 #include "ccl/class.hpp"
 
@@ -17,8 +15,7 @@ namespace ccl {
 	class _Object : public GcAble {
 	public:
 		Class clazz;
-		boost::uuids::uuid id;
-		Execution owner;
+		std::optional<Execution> owner;
 		Mutex mutex;
 		union {
 			void* asPtr;
@@ -27,6 +24,9 @@ namespace ccl {
 		} value;
 		
 		// lifetime handlers
+		_Object(Class& clazz, void* value);
+		_Object(Class& clazz, double value);
+		_Object(Class& clazz, uint64_t value);
 		_Object(Execution& owner, Class& clazz, void* value);
 		_Object(Execution& owner, Class& clazz, double value);
 		_Object(Execution& owner, Class& clazz, uint64_t value);
