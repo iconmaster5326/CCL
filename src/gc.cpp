@@ -15,6 +15,8 @@ using namespace std;
 using namespace ccl;
 
 std::list<ccl::GcNode> ccl::gcNodes{};
+std::unordered_set<GcNodeRef,GcNodeRefHash>* ccl::gcValidNodes = nullptr;
+std::list<GcNode>* ccl::gcStaticallyAllocatedNodes = nullptr;
 Mutex ccl::gcMutex{};
 size_t ccl::gcBytesAllocated = 0;
 size_t ccl::gcHardLimit = numeric_limits<size_t>::max();
@@ -23,12 +25,6 @@ size_t ccl::gcSoftLimit = 0;
 ccl::GcAble::~GcAble() {}
 
 void ccl::GcAble::gcGetChildren(std::function<void(GcNodeRef)> addChild) {}
-
-struct GcNodeRefHash {
-	size_t operator()(const GcNodeRef& node) const {
-		return (size_t) (void*) &*node;
-	}
-};
 
 void ccl::GcNode::runMinorGC() {
 	Lock lock{gcMutex};
@@ -40,6 +36,8 @@ void ccl::GcNode::runMinorGC() {
 		if (it->collectable) {
 			GcNodeRef node = it; it++;
 			
+			if (!gcValidNodes) gcValidNodes = new std::unordered_set<GcNodeRef,GcNodeRefHash>();
+			gcValidNodes->erase(node);
 			gcBytesAllocated -= node->size;
 			delete node->memory;
 			gcNodes.erase(node);
@@ -119,9 +117,9 @@ void ccl::GcNode::runMajorGC() {
 
 bool ccl::GcNode::valid(GcNodeRef node) {
 	Lock lock{gcMutex};
-	
-	for (GcNodeRef it = gcNodes.begin(); it != gcNodes.end(); it++) {
-		if (it == node) return true;
+	if (!gcValidNodes) {
+		gcValidNodes = new std::unordered_set<GcNodeRef,GcNodeRefHash>();
+		return false;
 	}
-	return false;
+	return gcValidNodes->find(node) != gcValidNodes->end();
 }

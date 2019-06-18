@@ -11,7 +11,7 @@
 #include <functional>
 #include <list>
 #include <mutex>
-#include <shared_mutex>
+#include <unordered_set>
 #include <iostream>
 
 #ifdef CCL_GC_DEBUG
@@ -24,17 +24,24 @@
 #endif
 
 namespace ccl {
-	using Mutex = std::recursive_mutex;
-	using Lock = std::lock_guard<Mutex>;
-	
-	extern size_t gcSoftLimit, gcHardLimit;
-	
 	struct GcNode; struct GcAble;
 	
+	using Mutex = std::recursive_mutex;
+	using Lock = std::lock_guard<Mutex>;
+	using GcNodeRef = std::list<GcNode>::iterator;
+	
+	struct GcNodeRefHash {
+		size_t operator()(const GcNodeRef& node) const {
+			return (size_t) (void*) &*node;
+		}
+	};
+	
+	extern size_t gcSoftLimit, gcHardLimit;
 	extern Mutex gcMutex;
 	extern size_t gcBytesAllocated;
 	extern std::list<GcNode> gcNodes;
-	using GcNodeRef = std::list<GcNode>::iterator;
+	extern std::unordered_set<GcNodeRef,GcNodeRefHash>* gcValidNodes;
+	extern std::list<GcNode>* gcStaticallyAllocatedNodes;
 	
 	struct GcOutOfMemoryError {};
 	struct GcInternalError {};
@@ -76,11 +83,29 @@ namespace ccl {
 			}
 			
 			gcNodes.emplace_front(mem, sizeof(T));
+			if (!gcValidNodes) gcValidNodes = new std::unordered_set<GcNodeRef,GcNodeRefHash>();
+			gcValidNodes->insert(gcNodes.begin());
 			return gcNodes.begin();
+		}
+		
+		template<typename T, typename... Args>
+		static GcNodeRef staticAlloc(Args... args) {
+			T* mem = new T(args...);
+			Lock lock{gcMutex};
+			
+			if (!gcStaticallyAllocatedNodes) gcStaticallyAllocatedNodes = new std::list<GcNode>();
+			if (!gcValidNodes) gcValidNodes = new std::unordered_set<GcNodeRef,GcNodeRefHash>();
+			
+			gcStaticallyAllocatedNodes->emplace_front(mem, sizeof(T));
+			gcValidNodes->insert(gcStaticallyAllocatedNodes->begin());
+			return gcStaticallyAllocatedNodes->begin();
 		}
 		
 		inline GcNode(GcAble* memory, size_t bytes) : memory{memory}, size{bytes} {}
 	};
+	
+	struct GcStaticAlloc {};
+	constexpr GcStaticAlloc gcStaticAlloc{};
 	
 	template<typename T>
 	struct Gc {
@@ -127,6 +152,9 @@ namespace ccl {
 			node = other.node;
 			return *this;
 		}
+		
+		template<typename... Args>
+		Gc(const GcStaticAlloc gcStaticAlloc, Args... args) : node{GcNode::staticAlloc<T, Args...>(args...)} {}
 		
 		template<typename... Args>
 		Gc(Args... args) : node{GcNode::alloc<T, Args...>(args...)} {}
