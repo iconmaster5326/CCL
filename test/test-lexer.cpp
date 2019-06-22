@@ -398,4 +398,65 @@ BOOST_AUTO_TEST_CASE(everyToken) {
 	BOOST_CHECK(lexer.done());
 }
 
+BOOST_AUTO_TEST_CASE(peeking) {
+	Lexer lexer{location, "hello world"};
+	Token t;
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.peek();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "hello");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 1);
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.peek();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "hello");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 1);
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "hello");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 1);
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.peek();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "world");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 7);
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.peek();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "world");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 7);
+	
+	BOOST_CHECK_NO_THROW({
+		t = lexer.next();
+	});
+	BOOST_CHECK_EQUAL(t.type, Token::Type::WORD);
+	BOOST_CHECK_EQUAL(t.value, "world");
+	BOOST_CHECK_EQUAL(*t.source.location, location);
+	BOOST_CHECK_EQUAL(t.source.line, 1);
+	BOOST_CHECK_EQUAL(t.source.col, 7);
+	
+	BOOST_CHECK(lexer.done());
+}
+
 BOOST_AUTO_TEST_SUITE_END();

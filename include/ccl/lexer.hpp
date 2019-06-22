@@ -47,13 +47,15 @@ namespace ccl {
 		~Lexer();
 		
 		Token next();
+		Token peek();
 		bool done();
 	private:
 		const std::string& location;
-		bool inputOwned;
+		bool inputOwned, peeked;
 		std::istream* input;
 		int line = 1;
 		int col = 1;
+		Token tokenPeeked;
 		
 		void advance(char c);
 		void toNextWS();

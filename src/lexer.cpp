@@ -15,12 +15,12 @@ using namespace ccl;
 
 static const string SPECIAL_CHARS = "|&;(){}[]\"\'";
 
-ccl::Lexer::Lexer(const std::string& location, std::istream& input) : location{location}, inputOwned(false), input(&input) {
+ccl::Lexer::Lexer(const std::string& location, std::istream& input) : location{location}, inputOwned(false), input(&input), peeked{false}, tokenPeeked{Token::Type::NONE, "", Source()} {
 	noskipws(*this->input);
 	toNextWS();
 }
 
-ccl::Lexer::Lexer(const std::string& location, const std::string& input) : location{location}, inputOwned(true), input(new std::istringstream(input)) {
+ccl::Lexer::Lexer(const std::string& location, const std::string& input) : location{location}, inputOwned(true), input(new std::istringstream(input)), peeked{false}, tokenPeeked{Token::Type::NONE, "", Source()} {
 	noskipws(*this->input);
 	toNextWS();
 }
@@ -39,6 +39,11 @@ void Lexer::advance(char c) {
 }
 
 Token ccl::Lexer::next() {
+	if (peeked) {
+		peeked = false;
+		return tokenPeeked;
+	}
+	
 	Token result{Token::Type::NONE, ""};
 	Source source = {location, line, col}; result.source = source;
 	if (done()) return result;
@@ -179,6 +184,14 @@ Token ccl::Lexer::next() {
 
 bool ccl::Lexer::done() {
 	return input->fail() || input->eof();
+}
+
+Token ccl::Lexer::peek() {
+	if (!peeked) {
+		tokenPeeked = next();
+		peeked = true;
+	}
+	return tokenPeeked;
 }
 
 void ccl::Lexer::toNextWS() {
