@@ -17,6 +17,19 @@ namespace ccl {
 		static Object NIL;
 	};
 	
+	CCL_DECL_GC_CLASS(ClassBool) : public _Class {
+	public:
+		using Instance = bool;
+		static ClassBool CLASS;
+		static Object TRUE, FALSE;
+		static Object create(Instance value) {
+			return value ? TRUE : FALSE;
+		}
+		static Instance value(const Object& self) {
+			return self == TRUE ? true : false;
+		}
+	};
+	
 	CCL_DECL_GC_CLASS(ClassString) : public _Class {
 	public:
 		using Instance = std::string;

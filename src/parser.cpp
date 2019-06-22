@@ -33,6 +33,23 @@ static optional<_ProgramCall::Arg> parseFuncArg(Context& ctx, Lexer& lexer) {
 		lexer.next();
 		return optional<_ProgramCall::Arg>(in_place, (Program) ProgramVar(t.value, t.source));
 	} break;
+	case Token::Type::FLAG: {
+		lexer.next();
+		switch (lexer.peek().type) {
+		case Token::Type::VAR:
+		case Token::Type::EX_STRING:
+		case Token::Type::STRING:
+		case Token::Type::LPAREN:
+		case Token::Type::LBRACE:
+		case Token::Type::LBRACKET:
+		case Token::Type::WORD: {
+			auto a = parseFuncArg(ctx, lexer);
+			return optional<_ProgramCall::Arg>(in_place, t.value, a->value);
+		} break;
+		default:
+			return optional<_ProgramCall::Arg>(in_place, t.value, ProgramConstant(_ClassBool::TRUE, t.source));
+		}
+	} break;
 	case Token::Type::EX_STRING:
 	case Token::Type::STRING:
 	case Token::Type::WORD: {

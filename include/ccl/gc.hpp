@@ -170,6 +170,10 @@ namespace ccl {
 			return (T*)(node->memory);
 		}
 		
+		bool operator==(const Gc<T>& other) const {
+			return node == other.node;
+		}
+		
 		operator GcNodeRef() const {
 			return node;
 		}
