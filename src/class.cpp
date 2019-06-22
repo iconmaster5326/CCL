@@ -5,6 +5,8 @@
  *      Author: iconmaster
  */
 
+#include <sstream>
+
 #include "ccl/class.hpp"
 #include "ccl/error.hpp"
 
@@ -38,4 +40,10 @@ Object ccl::_Class::execute(_Object& self, Thread& thread, Object& input,
 		std::deque<Object>& args,
 		std::unordered_map<std::string, Object>& flags) {
 	throw Error("Cannot call instances of class <" + name() + ">");
+}
+
+std::string ccl::_Class::toString(_Object& self) {
+	ostringstream sb;
+	sb << "<" << name() << "@" << (void*) &self << ">";
+	return sb.str();
 }

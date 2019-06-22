@@ -43,6 +43,9 @@ namespace ccl {
 		Object execute(Thread& thread, Object& input, std::deque<Object>& args, std::unordered_map<std::string, Object>& flags) {
 			return clazz->execute(*this, thread, input, args, flags);
 		}
+		std::string toString() {
+			return clazz->toString(*this);
+		}
 	};
 }
 

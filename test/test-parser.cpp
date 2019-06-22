@@ -32,6 +32,7 @@ BOOST_AUTO_TEST_CASE(aParse) {
 	
 	BOOST_CHECK_NO_THROW({
 		Program p = parse(ctx, location, "a -b (c 1 2 (3 4)) -d -e (f -g h -i | $j)");
+		cout << p->toString() << endl;
 	});
 }
 

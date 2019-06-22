@@ -5,6 +5,8 @@
  *      Author: iconmaster
  */
 
+#include <sstream>
+
 #include "ccl/program.hpp"
 #include "ccl/scope.hpp"
 #include "ccl/object.hpp"
@@ -65,4 +67,46 @@ Object ccl::_ProgramVar::evaluate(Thread& thread, Scope& scope, Object& input)
 		return _ClassNil::NIL;
 	}
 	return opt.value();
+}
+
+std::string ccl::_ProgramNull::toString()
+{
+	return "";
+}
+
+std::string ccl::_ProgramConstant::toString()
+{
+	return value->toString();
+}
+
+std::string ccl::_ProgramCall::toString()
+{
+	ostringstream sb;
+	sb << "(" << function;
+	
+	for (auto& arg : args) {
+		sb << " ";
+		if (arg.flag) {
+			sb << "-" << arg.key << " ";
+		}
+		sb << arg.value->toString();
+	}
+	
+	sb << ")";
+	return sb.str();
+}
+
+std::string ccl::_ProgramPipe::toString()
+{
+	return "(" + lhs->toString() + " | " + rhs->toString() + ")";
+}
+
+std::string ccl::_ProgramSequence::toString()
+{
+	return "(" + lhs->toString() + " ; " + rhs->toString() + ")";
+}
+
+std::string ccl::_ProgramVar::toString()
+{
+	return "$" + name;
 }

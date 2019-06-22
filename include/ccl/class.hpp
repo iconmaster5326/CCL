@@ -28,6 +28,7 @@ namespace ccl {
 		
 		// interface to objects
 		virtual std::string name();
+		virtual std::string toString(_Object& self);
 		virtual Object execute(_Object& self, Thread& thread, Object& input, std::deque<Object>& args, std::unordered_map<std::string, Object>& flags);
 	};
 }
