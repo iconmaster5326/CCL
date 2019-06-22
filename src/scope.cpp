@@ -7,20 +7,20 @@
 
 #include "ccl/scope.hpp"
 #include "ccl/object.hpp"
-#include "ccl/context.hpp"
+#include "ccl/classes.hpp"
 
 using namespace std;
 using namespace ccl;
 
-ccl::_Scope::_Scope()
+ccl::_Scope::_Scope() : input{_ClassNil::NIL}
 {
 }
 
-ccl::_Scope::_Scope(Scope parent) : parent{parent}
+ccl::_Scope::_Scope(Scope& parent) : parent{parent}, input{_ClassNil::NIL}
 {
 }
 
-ccl::_Scope::_Scope(Scope parent, Object input) : parent{parent} //, input{input}
+ccl::_Scope::_Scope(Scope& parent, Object& input) : parent{parent}, input{input}
 {
 }
 

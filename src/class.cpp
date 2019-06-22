@@ -6,7 +6,6 @@
  */
 
 #include "ccl/class.hpp"
-#include "ccl/context.hpp"
 
 using namespace std;
 using namespace ccl;

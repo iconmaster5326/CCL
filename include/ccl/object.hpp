@@ -15,8 +15,6 @@ namespace ccl {
 	class _Object : public GcAble {
 	public:
 		Class clazz;
-		std::optional<Execution> owner;
-		Mutex mutex;
 		union {
 			void* asPtr;
 			double asDouble;
@@ -27,9 +25,6 @@ namespace ccl {
 		_Object(Class& clazz, void* value);
 		_Object(Class& clazz, double value);
 		_Object(Class& clazz, uint64_t value);
-		_Object(Execution& owner, Class& clazz, void* value);
-		_Object(Execution& owner, Class& clazz, double value);
-		_Object(Execution& owner, Class& clazz, uint64_t value);
 		virtual ~_Object();
 		void gcGetChildren(std::function<void(GcNodeRef)> addChild);
 		

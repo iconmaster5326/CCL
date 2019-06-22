@@ -18,12 +18,12 @@ namespace ccl {
 	public:
 		std::unordered_map<std::string, Object> vars;
 		std::optional<Scope> parent;
-		//Object input;
+		Object input;
 		Mutex mutex;
 		
 		_Scope();
-		_Scope(Scope parent);
-		_Scope(Scope parent, Object input);
+		_Scope(Scope& parent);
+		_Scope(Scope& parent, Object& input);
 		virtual ~_Scope();
 		
 		virtual std::optional<Object> get(const std::string& name);

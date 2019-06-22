@@ -13,6 +13,7 @@
 #include <mutex>
 #include <unordered_set>
 #include <iostream>
+#include <type_traits>
 
 #ifdef CCL_GC_DEBUG
 #define CCL_GC_PRINT(x) {\
@@ -111,20 +112,6 @@ namespace ccl {
 	struct Gc {
 		GcNodeRef node;
 		
-		Gc(const T& other) {
-			Lock lock{gcMutex};
-			
-			for (GcNodeRef node = gcNodes.begin(); node != gcNodes.end(); node++) {
-				if (&other == node->memory) {
-					this->node = node;
-					node->refs++;
-					break;
-				}
-			}
-			
-			throw GcInternalError();
-		}
-		
 		Gc(GcNodeRef other) : node{other} {
 			Lock lock{gcMutex};
 			node->refs++;
@@ -137,6 +124,12 @@ namespace ccl {
 		
 		Gc(Gc<T>&& other) : node{other.node} {
 			
+		}
+		
+		template<typename U, typename = typename std::enable_if<std::is_convertible<U,T>::value>::type>
+		Gc(const Gc<U>& other) : node{other.node} {
+			Lock lock{gcMutex};
+			node->refs++;
 		}
 		
 		Gc<T>& operator=(const Gc<T>& other) {

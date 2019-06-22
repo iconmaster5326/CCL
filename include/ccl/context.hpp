@@ -8,14 +8,17 @@
 #ifndef INCLUDE_CCL_CONTEXT_HPP_
 #define INCLUDE_CCL_CONTEXT_HPP_
 
+#include <deque>
+
 #include "ccl/types.hpp"
 
 namespace ccl {
 	class _Context : public GcAble {
 	public:
+		std::deque<Thread> threads;
 	};
 	
-	class _Execution : public GcAble {
+	class _Thread : public GcAble {
 	public:
 		Context ctx;
 	};
