@@ -186,7 +186,7 @@ bool ccl::Lexer::done() {
 	return !peeked && (input->fail() || input->eof());
 }
 
-Token ccl::Lexer::peek() {
+Token& ccl::Lexer::peek() {
 	if (!peeked) {
 		tokenPeeked = next();
 		peeked = true;

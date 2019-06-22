@@ -47,7 +47,7 @@ namespace ccl {
 		~Lexer();
 		
 		Token next();
-		Token peek();
+		Token& peek();
 		bool done();
 	private:
 		const std::string& location;

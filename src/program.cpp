@@ -14,6 +14,11 @@
 using namespace std;
 using namespace ccl;
 
+Object ccl::_ProgramNull::evaluate(Thread& thread, Scope& scope, Object& input)
+{
+	return input;
+}
+
 Object ccl::_ProgramConstant::evaluate(Thread& thread, Scope& scope, Object& input)
 {
 	return value;

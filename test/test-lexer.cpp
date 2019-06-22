@@ -18,7 +18,7 @@ using namespace ccl;
 static string location = "TEST LOCATION";
 
 namespace std {
-	ostream& operator<<(ostream& os, const Token::Type t) {
+	static ostream& operator<<(ostream& os, const Token::Type t) {
 		os << (void*) t;
 		return os;
 	}

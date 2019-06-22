@@ -126,7 +126,7 @@ namespace ccl {
 			
 		}
 		
-		template<typename U, typename = typename std::enable_if<std::is_convertible<U,T>::value>::type>
+		template<typename U, typename = typename std::enable_if<std::is_convertible<U&,T&>::value>::type>
 		Gc(const Gc<U>& other) : node{other.node} {
 			Lock lock{gcMutex};
 			node->refs++;
