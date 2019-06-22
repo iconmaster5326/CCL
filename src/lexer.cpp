@@ -183,7 +183,7 @@ Token ccl::Lexer::next() {
 }
 
 bool ccl::Lexer::done() {
-	return input->fail() || input->eof();
+	return !peeked && (input->fail() || input->eof());
 }
 
 Token ccl::Lexer::peek() {

@@ -6,6 +6,7 @@
  */
 
 #include "ccl/class.hpp"
+#include "ccl/error.hpp"
 
 using namespace std;
 using namespace ccl;
@@ -27,4 +28,14 @@ bool ccl::_Class::equal(const _Object& self, const Object other) const
 bool ccl::_Class::lessThan(const _Object& self, const Object other) const
 {
 	return &self < &*other;
+}
+
+std::string ccl::_Class::name() {
+	return "object";
+}
+
+Object ccl::_Class::execute(_Object& self, Thread& thread, Object& input,
+		std::deque<Object>& args,
+		std::unordered_map<std::string, Object>& flags) {
+	throw Error("Cannot call instances of class <" + name() + ">");
 }

@@ -38,6 +38,11 @@ namespace ccl {
 		inline bool lessThan(const Object other) const {
 			return clazz->lessThan(*this, other);
 		}
+		
+		// interface to classes
+		Object execute(Thread& thread, Object& input, std::deque<Object>& args, std::unordered_map<std::string, Object>& flags) {
+			return clazz->execute(*this, thread, input, args, flags);
+		}
 	};
 }
 

@@ -8,6 +8,9 @@
 #ifndef INCLUDE_CCL_CLASS_HPP_
 #define INCLUDE_CCL_CLASS_HPP_
 
+#include <deque>
+#include <unordered_map>
+
 #include "ccl/types.hpp"
 
 namespace ccl {
@@ -22,6 +25,10 @@ namespace ccl {
 		virtual size_t hash(const _Object& self) const;
 		virtual bool equal(const _Object& self, const Object other) const;
 		virtual bool lessThan(const _Object& self, const Object other) const;
+		
+		// interface to objects
+		virtual std::string name();
+		virtual Object execute(_Object& self, Thread& thread, Object& input, std::deque<Object>& args, std::unordered_map<std::string, Object>& flags);
 	};
 }
 
