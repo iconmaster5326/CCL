@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(aParse) {
 	Context ctx;
 	
 	BOOST_CHECK_NO_THROW({
-		Program p = parse(ctx, location, "a -b c -d -e f -g");
+		Program p = parse(ctx, location, "a -b (c 1 2 (3 4)) -d -e (f -g h -i | $j)");
 	});
 }
 

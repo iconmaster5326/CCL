@@ -11,6 +11,8 @@
 using namespace ccl;
 using namespace std;
 
+static Program parseExpr(Context& ctx, Lexer& lexer);
+
 static void parsePostConst(Context& ctx, Lexer& lexer) {
 	Token& t = lexer.peek();
 	switch (t.type) {
@@ -49,6 +51,15 @@ static optional<_ProgramCall::Arg> parseFuncArg(Context& ctx, Lexer& lexer) {
 		default:
 			return optional<_ProgramCall::Arg>(in_place, t.value, ProgramConstant(_ClassBool::TRUE, t.source));
 		}
+	} break;
+	case Token::Type::LPAREN: {
+		lexer.next();
+		auto p = parseExpr(ctx, lexer);
+		if (lexer.peek().type != Token::Type::RPAREN) {
+			throw Error("Expected ')', got: " + lexer.peek().value);
+		}
+		lexer.next();
+		return optional<_ProgramCall::Arg>(in_place, p);
 	} break;
 	case Token::Type::EX_STRING:
 	case Token::Type::STRING:
