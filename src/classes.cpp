@@ -13,3 +13,5 @@ using namespace std;
 
 ClassNil ccl::_ClassNil::CLASS{gcStaticAlloc};
 Object ccl::_ClassNil::NIL{gcStaticAlloc, (Class) CLASS, nullptr};
+
+ClassString ccl::_ClassString::CLASS{gcStaticAlloc};

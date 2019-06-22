@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(aParse) {
 	Context ctx;
 	
 	BOOST_CHECK_NO_THROW({
-		Program p = parse(ctx, location, "$x | $y ; $z");
+		Program p = parse(ctx, location, "$x | 'y' ; $z");
 	});
 }
 

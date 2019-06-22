@@ -35,6 +35,13 @@ static optional<Program> parseExprPart(Context& ctx, Lexer& lexer) {
 		parsePostConst(ctx, lexer);
 		return optional<Program>(p);
 	} break;
+	case Token::Type::EX_STRING:
+	case Token::Type::STRING: {
+		lexer.next();
+		auto p = (Program) ProgramConstant(_ClassString::create(t.value), t.source);
+		parsePostConst(ctx, lexer);
+		return optional<Program>(p);
+	} break;
 	default:
 		return optional<Program>();
 	}
