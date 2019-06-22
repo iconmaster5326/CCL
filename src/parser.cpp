@@ -26,24 +26,61 @@ static void parsePostConst(Context& ctx, Lexer& lexer) {
 	}
 }
 
-static optional<Program> parseExprPart(Context& ctx, Lexer& lexer) {
+static optional<_ProgramCall::Arg> parseFuncArg(Context& ctx, Lexer& lexer) {
 	Token t = lexer.peek();
 	switch (t.type) {
 	case Token::Type::VAR: {
 		lexer.next();
-		auto p = (Program) ProgramVar(t.value, t.source);
-		parsePostConst(ctx, lexer);
-		return optional<Program>(p);
+		return optional<_ProgramCall::Arg>(in_place, (Program) ProgramVar(t.value, t.source));
 	} break;
 	case Token::Type::EX_STRING:
-	case Token::Type::STRING: {
+	case Token::Type::STRING:
+	case Token::Type::WORD: {
 		lexer.next();
-		auto p = (Program) ProgramConstant(_ClassString::create(t.value), t.source);
-		parsePostConst(ctx, lexer);
-		return optional<Program>(p);
+		return optional<_ProgramCall::Arg>(in_place, (Program) ProgramConstant(_ClassString::create(t.value), t.source));
 	} break;
 	default:
-		return optional<Program>();
+		return optional<_ProgramCall::Arg>(nullopt);
+	}
+}
+
+static optional<Program> parseExprPart(Context& ctx, Lexer& lexer) {
+	Token t = lexer.peek();
+	switch (t.type) {
+	case Token::Type::WORD: {
+		ProgramCall call{t.value, t.source};
+		auto a = parseFuncArg(ctx, lexer);
+		
+		while (a) {
+			call->args.emplace_back(*a);
+			a = parseFuncArg(ctx, lexer);
+		}
+		
+		unordered_set<string> flagsUsed;
+		for (const auto& arg : call->args) {
+			if (arg.flag) {
+				if (flagsUsed.find(arg.key) != flagsUsed.end()) {
+					throw Error("Duplicate flag given to function: " + arg.key);
+				}
+				flagsUsed.insert(arg.key);
+			}
+			
+		}
+		
+		return optional<Program>((Program) call);
+	} break;
+	case Token::Type::VAR:
+	case Token::Type::EX_STRING:
+	case Token::Type::STRING:
+	case Token::Type::LPAREN:
+	case Token::Type::LBRACE:
+	case Token::Type::LBRACKET: {
+		auto arg = parseFuncArg(ctx, lexer);
+		parsePostConst(ctx, lexer);
+		return arg->value;
+	} break;
+	default:
+		return optional<Program>(nullopt);
 	}
 }
 
